@@ -1,0 +1,38 @@
+# Handout 3 - find names of failed outlets near a position
+
+# Function to calculate distance between two points using Pythagoras
+FUNCTION getDistance( REAL hereX, REAL hereY, REAL x, REAL y ) RETURNS REAL
+    DECLARE xDiff INITIALLY hereX - x
+    DECLARE yDiff INITIALLY hereY - y
+	
+	# Use Pythagoras to find the distance between the two (x,y) points
+    DECLARE distance INITIALLY sqrt( (xDiff * xDiff) + (yDiff * yDiff) )
+    
+	RETURN distance
+END FUNCTION
+
+
+# This will be the collection of failed outlets - just storing the names.
+DECLARE failedNearMe AS ARRAY OF STRING INITIALLY []
+
+
+# This is dummy data - could typically be read in from GPS, or via text input etc.
+DECLARE myX INITIALLY -4.25772
+DECLARE myY INITIALLY 55.86079
+DECLARE minimumDistance INITIALLY 1.0  # This is a dummy distance
+
+
+# Now scan through all outlets, checking on failure status and distance
+FOR EACH outlet FROM outlets DO
+    IF outlet.ratingValue = "Improvement Required" AND
+       (minimumDistance >= 
+	    getDistance( myX, myY, outlet.longitude, outlet.latitude )) THEN
+        SET failedNearMe TO failedNearMe & [ outlet.businessName ]
+    END IF
+END FOR EACH
+
+
+# Now print out all the failed outlet names
+FOR EACH failed FROM failedNearMe DO
+    SEND failed TO DISPLAY
+END FOR EACH
