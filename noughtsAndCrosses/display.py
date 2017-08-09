@@ -23,14 +23,14 @@ testDelayData = "DISPLAY_REG 10000000000000000000000000000000  00000000000000000
 
 # Functions
 def drawWord(canvas, word, x, y):
-    data = int(word)
-    for n in range(0,32):
-        if data & 2**31:
-            pygame.draw.line(canvas, GREEN, (x, y), (x + BIT_WIDTH, y), BIT_HEIGHT)
-        else:
-            pygame.draw.line(canvas, DIM_GREEN, (x, y), (x + BIT_WIDTH, y), BIT_HEIGHT)
-        data = data << 1
-        x += BIT_SPACING
+    data = map(int,word)
+    for n in range(0,31):
+        for i in data:
+            if i == 1:
+                pygame.draw.line(canvas, GREEN, (x, y), (x + BIT_WIDTH, y), BIT_HEIGHT)
+            elif i == 0:
+                pygame.draw.line(canvas, DIM_GREEN, (x, y), (x + BIT_WIDTH, y), BIT_HEIGHT)
+            x += BIT_SPACING
 
 def drawDelayLine(canvas, delayLineData):
     y = 5 # Start in from the edge

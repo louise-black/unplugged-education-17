@@ -6,6 +6,8 @@
 
 from __future__ import print_function
 import sys
+import pygame
+import gamedisplay.py
 
 ## We use an integer to represent a bitboard
 ## If the board is laid out as follows:
@@ -97,10 +99,6 @@ def minimax(boards, depth, player):
                 break
     return ([scores[bestIndex], moves[bestIndex]])
 
-    
-
-        
-                      
 
 def checkWinner(bitboard):
     # check horizontal winners
@@ -122,7 +120,7 @@ def checkWinner(bitboard):
     diagonal_row = 4+16+64
     if bitboard & diagonal_row == diagonal_row:
         return True
-    
+
     return False
 
 def printBoard(boards, players):
@@ -147,19 +145,20 @@ boards = [0,0]  # xBoard is boards[0], oBoard is boards[1]
 players = ['X', 'O']
 
 turn = 0
+
 while True:
     # check whether board is full - if so it's a draw
     if boards[0] & boards[1] == FULL_BOARD:
         print ("drawn game")
         break
-    
+
     # ask player to make move (and check it is valid)
     print ("Player %s to make a move: " % (players[turn%2]))
-    
+
     #### NOT WORKING ##### print ("recommended move is %d, for score --" %(((minimax(boards, 1, turn%2))[0])))
 
     while True:
-        move = raw_input()  ## check its an int in range 1..9 inclusive, 
+        move = raw_input()  ## check its an int in range 1..9 inclusive,
         try:
             # check input is int
             move = int(move)
@@ -178,9 +177,10 @@ while True:
     # put move on board
     boards[turn%2] += square
 
+
     # print board
     printBoard(boards,players)
-    
+
     # then check whether that player has won
     if checkWinner(boards[turn%2]):
         print ("Player %s has won the game" % (players[turn%2]))
@@ -189,6 +189,3 @@ while True:
     # then loop back to start
     turn += 1
     continue
-    
-    
-
